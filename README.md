@@ -7,19 +7,128 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+# Repo Trackr Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Repo Trackr es una API desarrollada en Laravel que permite consultar y obtener información sobre repositorios de GitHub para cualquier usuario.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Documentación de la API
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Endpoints disponibles
+
+#### Prueba de conexión
+
+```
+GET /api/test
+```
+
+Retorna un mensaje simple para verificar que la API está funcionando correctamente.
+
+**Respuesta:**
+
+```json
+{
+    "message": "Hello World"
+}
+```
+
+#### Obtener repositorios de usuario
+
+```
+GET /api/user/{username}
+```
+
+Retorna información sobre los repositorios públicos de un usuario específico de GitHub.
+
+**Parámetros de URL:**
+
+-   `username` (obligatorio): Nombre de usuario de GitHub
+
+**Parámetros de consulta (opcionales):**
+
+-   `sort`: Criterio de ordenación de los repositorios (valores posibles: `updated`, `created`, `pushed`, `full_name`). Por defecto: `updated`
+-   `direction`: Dirección del ordenamiento (valores posibles: `asc`, `desc`). Por defecto: `desc`
+-   `per_page`: Número de repositorios por página. Por defecto: `30`
+-   `page`: Número de página a mostrar. Por defecto: `1`
+
+**Ejemplo de solicitud:**
+
+```
+GET /api/user/MrNizzy?sort=created&direction=asc&per_page=10&page=1
+```
+
+**Respuesta exitosa:**
+
+```json
+{
+    "username": "MrNizzy",
+    "repositories": [
+        {
+            "name": "repo-trackr-laravel",
+            "full_name": "MrNizzy/repo-trackr-laravel",
+            "description": null,
+            "url": "https://github.com/MrNizzy/repo-trackr-laravel",
+            "stars": 0,
+            "forks": 0,
+            "language": "Blade",
+            "created_at": "2025-04-26T06:18:23Z",
+            "updated_at": "2025-04-26T19:14:37Z"
+        }
+        // ... más repositorios
+    ]
+}
+```
+
+**Respuesta de error:**
+
+```json
+{
+    "error": "No se encontró el usuario o hubo un problema con la API de GitHub",
+    "status": 404
+}
+```
+
+## Instalación y configuración
+
+1. Clona este repositorio
+
+```bash
+git clone https://github.com/tu-usuario/repo-trackr-laravel.git
+cd repo-trackr-laravel
+```
+
+2. Instala las dependencias
+
+```bash
+composer install
+```
+
+3. Copia el archivo .env.example a .env
+
+```bash
+cp .env.example .env
+```
+
+4. Genera la clave de la aplicación
+
+```bash
+php artisan key:generate
+```
+
+5. Inicia el servidor de desarrollo
+
+```bash
+php artisan serve
+```
+
+## Tecnologías utilizadas
+
+-   Laravel 10.x
+-   PHP 8.2+
+-   GitHub API
+
+## Contribuir
+
+Las contribuciones son bienvenidas. Para cambios importantes, abra primero un issue para discutir lo que le gustaría cambiar.
 
 ## Learning Laravel
 
@@ -35,18 +144,14 @@ We would like to extend our thanks to the following sponsors for funding Laravel
 
 ### Premium Partners
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development/)**
-- **[Active Logic](https://activelogic.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+-   **[Vehikl](https://vehikl.com/)**
+-   **[Tighten Co.](https://tighten.co)**
+-   **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
+-   **[64 Robots](https://64robots.com)**
+-   **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
+-   **[DevSquad](https://devsquad.com/hire-laravel-developers)**
+-   **[Redberry](https://redberry.international/laravel-development/)**
+-   **[Active Logic](https://activelogic.com)**
 
 ## Code of Conduct
 
