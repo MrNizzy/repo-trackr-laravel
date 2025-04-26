@@ -11,13 +11,25 @@ class GithubController extends Controller
      * Obtiene los repositorios de un usuario de GitHub.
      *
      * @param  string  $username
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getUserRepositories($username)
+    public function getUserRepositories($username, Request $request)
     {
         try {
+            // Obtener parámetros de consulta con valores predeterminados
+            $sort = $request->query('sort', 'updated'); // updated, created, pushed, full_name
+            $direction = $request->query('direction', 'desc'); // asc o desc
+            $perPage = $request->query('per_page', 30); // por defecto 30 repos por página
+            $page = $request->query('page', 1); // por defecto página 1
+
             // Petición a la API de GitHub para obtener los repositorios del usuario
-            $response = Http::get("https://api.github.com/users/{$username}/repos");
+            $response = Http::get("https://api.github.com/users/{$username}/repos", [
+                'sort' => $sort,
+                'direction' => $direction,
+                'per_page' => $perPage,
+                'page' => $page
+            ]);
 
             // Verificar si la petición fue exitosa
             if ($response->successful()) {
